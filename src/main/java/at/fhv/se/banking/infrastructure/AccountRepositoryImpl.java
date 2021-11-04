@@ -32,4 +32,9 @@ public class AccountRepositoryImpl implements AccountRepository {
                 .filter(a -> a.getOwner().getCustomerNumber().equals(customerNumber))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void storeAll(List<Account> accounts) {
+        this.accounts.addAll(accounts);
+    }
 }

@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface AccountRepository {
     Optional<Account> getByIban(String iban);
     List<Account> getByOwnerNumber(String customerNumber);
+
+    void storeAll(List<Account> accounts);
 }

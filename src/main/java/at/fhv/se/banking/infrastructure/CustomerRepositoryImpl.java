@@ -28,4 +28,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                 .filter(c -> c.getCustomerNumber().equals(customerNumber))
                 .findFirst();
     }
+
+    @Override
+    public void storeAll(List<Customer> customers) {
+        this.customers.addAll(customers);
+    }
 }

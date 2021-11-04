@@ -3,6 +3,7 @@ package at.fhv.se.banking.view;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import at.fhv.se.banking.application.api.AccountService;
 import at.fhv.se.banking.application.api.CustomerService;
@@ -51,12 +52,8 @@ public class BankingViewController {
     public String allCustomers(Model model) {
         // TODO: make a call to an Application Service to get all Customers
         // TODO: this is fake test data, remove when implementing
-        final List<CustomerDTO> customers = Arrays.asList(
-            CustomerDTO.builder()
-                .withName("Max Mustermann")
-                .withId("1")
-                .build()
-        );
+        final List<CustomerDTO> customers = customerService.getAll();
+
         model.addAttribute("customers", customers);
 
         return ALL_CUSTOMERS_VIEW;
@@ -70,7 +67,7 @@ public class BankingViewController {
         // TODO: make a call to an Application Service to get the customer details for customer with customerId
         // TODO: redirect to the error page in case of an error situation - use redirectError("SOME MESSAGE"); for that
         // TODO: this is fake test data, remove when implementing
-        final CustomerDetailsDTO customerDetails = CustomerDetailsDTO.builder()
+        /*final CustomerDetailsDTO customerDetails = CustomerDetailsDTO.builder()
             .withCustomer(CustomerDTO.builder()
                 .withName("Max Mustermann")
                 .withId("1")
@@ -80,8 +77,15 @@ public class BankingViewController {
                 .withIban("AT12 12345 01234567890")
                 .withType("Giro")
                 .build())
-            .build();
-        model.addAttribute("customer", customerDetails);
+            .build();*/
+
+        Optional<CustomerDetailsDTO> customerResult = customerService.getById(customerId);
+
+        if(customerResult.isEmpty()) {
+            return redirectError("CUSTOMER NOT FOUND");
+        }
+
+        model.addAttribute("customer", customerResult.get());
         return new ModelAndView(CUSTOMER_VIEW);
     }
 
@@ -95,7 +99,7 @@ public class BankingViewController {
         // TODO: make a call to an Application Service to get the Account with iban
         // TODO: redirect to the error page in case of an error situation - use redirectError("SOME MESSAGE"); for that
         // TODO: this is fake test data, remove when implementing
-        final AccountDTO account = AccountDTO.builder()
+        /*final AccountDTO account = AccountDTO.builder()
             .withDetails(AccountDetailsDTO.builder()
                 .withBalance(1000)
                 .withIban("AT12 12345 01234567890")
@@ -108,11 +112,17 @@ public class BankingViewController {
                 .atTime(LocalDateTime.now())
                 .withReference("Miete")
                 .build())
-            .build();
+            .build();*/
+
+        Optional<AccountDTO> accountResult = accountService.getByIban(iban);
+
+        if(accountResult.isEmpty()) {
+            return redirectError("ACCOUNT NOT FOUND");
+        }
 
         final AccountForm form = new AccountForm(customerId, customerName, iban);
 
-        model.addAttribute("account", account);
+        model.addAttribute("account", accountResult.get());
         model.addAttribute("form", form);
         return new ModelAndView(ACCOUNT_VIEW);
     }
@@ -124,6 +134,12 @@ public class BankingViewController {
 
         // TODO: make a call to an Application Service to deposit form.getAmount() into the Account with form.getIban()
         // TODO: redirect to the error page in case of an error situation - use redirectError("SOME MESSAGE"); for that
+        try {
+            accountService.deposit(form.getIban(), form.getAmount());
+        }
+        catch (Exception x) {
+            return redirectError("DEPOSIT FAILED:\r\n" + x.getMessage());
+        }
 
         return redirectToAccount(form);
     }
@@ -135,6 +151,12 @@ public class BankingViewController {
 
         // TODO: make a call to an Application Service to withdraw form.getAmount() from the Account with form.getIban()
         // TODO: redirect to the error page in case of an error situation - use redirectError("SOME MESSAGE"); for that
+        try {
+            accountService.withdraw(form.getIban(), form.getAmount());
+        }
+        catch (Exception x) {
+            return redirectError("WITHDRAWAL FAILED:\r\n" + x.getMessage());
+        }
 
         return redirectToAccount(form);
     }
@@ -148,7 +170,13 @@ public class BankingViewController {
         // TODO: make a call to an Application Service to transfer form.getAmount() from an account with form.getIban() to an account with 
         //       receivingIban with a specific reference
         // TODO: redirect to the error page in case of an error situation - use redirectError("SOME MESSAGE"); for that
-        
+        try {
+            accountService.transfer(form.getIban(), receivingIban, form.getAmount());
+        }
+        catch (Exception x) {
+            return redirectError("TRANSFER FAILED:\r\n" + x.getMessage());
+        }
+
         return redirectToAccount(form);
     }
 
