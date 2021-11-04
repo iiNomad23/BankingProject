@@ -124,7 +124,7 @@ public class BankingViewController {
             @ModelAttribute AccountForm form, 
             Model model) {
 
-        // TODO: make a call to an Application Service to withdraw form.getAmount() into the Account with form.getIban()
+        // TODO: make a call to an Application Service to withdraw form.getAmount() from the Account with form.getIban()
         // TODO: redirect to the error page in case of an error situation - use redirectError("SOME MESSAGE"); for that
 
         return redirectToAccount(form);
