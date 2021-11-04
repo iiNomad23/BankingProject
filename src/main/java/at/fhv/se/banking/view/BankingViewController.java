@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import at.fhv.se.banking.application.api.AccountService;
+import at.fhv.se.banking.application.api.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +40,12 @@ public class BankingViewController {
     private static final String ERROR_VIEW = "errorView";
 
     // TODO: inject Application Service Interfaces
+
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private CustomerService customerService;
+
 
     @GetMapping(ALL_CUSTOMERS_URL)
     public String allCustomers(Model model) {

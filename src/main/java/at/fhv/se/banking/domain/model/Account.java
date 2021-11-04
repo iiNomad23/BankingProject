@@ -11,7 +11,7 @@ public class Account {
     private String type;
     private List<Transaction> transactions;
 
-    public String getIban() {
+    public String iban() {
         return iban;
     }
 
@@ -19,11 +19,11 @@ public class Account {
         return owner;
     }
 
-    public double getBalance() {
+    public double balance() {
         return balance;
     }
 
-    public String getType() {
+    public String type() {
         return type;
     }
 
@@ -33,6 +33,22 @@ public class Account {
         this.balance = 0;
         this.type = type;
         this.transactions = new ArrayList<>();
+    }
+
+    public void deposit(double amount) throws Exception {
+        if(amount <= 0) {
+            throw new Exception("negativ");
+        }
+
+        this.balance += amount;
+    }
+
+    public void withdraw(double amount) throws Exception {
+        if(amount <= 0) {
+            throw new Exception("negativ");
+        }
+
+        this.balance -= amount;
     }
 
     public void transferTo(Account receiver, double amount) throws Exception {

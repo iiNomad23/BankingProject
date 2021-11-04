@@ -8,10 +8,10 @@ public interface AccountService {
 
     Optional<AccountDTO> getByIban(String iban);
 
-    void deposit(String accountIban, double amount);
+    void deposit(String accountIban, double amount) throws Exception;
 
-    void withdraw(String accountIban, double amount);
+    void withdraw(String accountIban, double amount) throws Exception;
 
-    void transfer(String sendingIban, String receivingIban, double amount);
+    void transfer(String sendingIban, String receivingIban, double amount) throws Exception;
 
 }
