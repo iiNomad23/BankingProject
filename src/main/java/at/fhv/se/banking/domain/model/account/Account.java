@@ -1,10 +1,21 @@
-package at.fhv.se.banking.domain.model;
+package at.fhv.se.banking.domain.model.account;
+
+import at.fhv.se.banking.domain.model.Customer;
+import at.fhv.se.banking.domain.model.transfer.Transaction;
+import at.fhv.se.banking.domain.model.transfer.TransferException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Account {
+
+    public static final int OVERDRAFT_LIMIT = 1000;
+    public static final int INTEREST_THRESHOLD = 1000;
+    public static final double INTEREST_RATE = 0.02;
+
+    private AccountState state;
+
     private String iban;
     private Customer owner;
     private double balance;
@@ -35,6 +46,10 @@ public class Account {
         this.transactions = new ArrayList<>();
     }
 
+    void changeState(AccountState state) {
+        this.state = state;
+    }
+
     public void deposit(double amount) throws Exception {
         if(amount <= 0) {
             throw new Exception("negativ");
@@ -51,13 +66,13 @@ public class Account {
         this.balance -= amount;
     }
 
-    public void transferTo(Account receiver, double amount) throws Exception {
+    public void transferTo(Account receiver, double amount) throws TransferException {
         if(amount <= 0) {
-            throw new Exception("diebstahl");
+            throw new TransferException("diebstahl");
         }
 
         if(this.balance < amount) {
-            throw new Exception("armut");
+            throw new TransferException("armut");
         }
 
         Transaction tx = new Transaction(this, receiver, amount, LocalDateTime.now());

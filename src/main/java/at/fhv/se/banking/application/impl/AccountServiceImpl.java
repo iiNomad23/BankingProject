@@ -3,12 +3,11 @@ package at.fhv.se.banking.application.impl;
 import at.fhv.se.banking.application.api.AccountService;
 import at.fhv.se.banking.application.dto.AccountDTO;
 import at.fhv.se.banking.application.dto.AccountDetailsDTO;
-import at.fhv.se.banking.domain.model.Account;
+import at.fhv.se.banking.domain.model.account.Account;
 import at.fhv.se.banking.domain.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Component
@@ -34,11 +33,13 @@ public class AccountServiceImpl implements AccountService {
 
         Account account = result.get();
 
-        return Optional.of(AccountDTO.builder().withDetails(AccountDetailsDTO.builder()
-                    .withIban(account.iban())
-                    .withBalance(account.balance())
-                    .withType(account.type())
-                .build()).build());
+        AccountDetailsDTO adto = AccountDetailsDTO.builder()
+                .withIban(account.iban())
+                .withBalance(account.balance())
+                .withType(account.type())
+                .build();
+
+        return Optional.of(AccountDTO.builder().withDetails(adto).build());
     }
 
     @Override

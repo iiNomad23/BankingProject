@@ -1,6 +1,6 @@
 package at.fhv.se.banking;
 
-import at.fhv.se.banking.domain.model.Account;
+import at.fhv.se.banking.domain.model.account.Account;
 import at.fhv.se.banking.domain.model.Customer;
 import at.fhv.se.banking.domain.repositories.AccountRepository;
 import at.fhv.se.banking.domain.repositories.CustomerRepository;

@@ -1,6 +1,5 @@
 package at.fhv.se.banking.domain.repositories;
 
-import at.fhv.se.banking.domain.model.Account;
 import at.fhv.se.banking.domain.model.Customer;
 
 import java.util.List;

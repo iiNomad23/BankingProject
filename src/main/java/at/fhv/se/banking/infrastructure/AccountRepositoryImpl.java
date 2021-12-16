@@ -1,8 +1,7 @@
 package at.fhv.se.banking.infrastructure;
 
-import at.fhv.se.banking.domain.model.Account;
+import at.fhv.se.banking.domain.model.account.Account;
 import at.fhv.se.banking.domain.repositories.AccountRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

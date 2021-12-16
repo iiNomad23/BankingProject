@@ -1,4 +1,6 @@
-package at.fhv.se.banking.domain.model;
+package at.fhv.se.banking.domain.model.transfer;
+
+import at.fhv.se.banking.domain.model.account.Account;
 
 import java.time.LocalDateTime;
 
